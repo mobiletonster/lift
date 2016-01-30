@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.System;
 using Windows.System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -47,6 +48,7 @@ namespace Lift.Models
 
         public void StartGame()
         {
+            Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
             Hours = 0;
             GameTimer = new DispatcherTimer();
             GameTimer.Tick += GameTimer_Tick;
@@ -54,6 +56,46 @@ namespace Lift.Models
             GameTimer.Start();
             Population = 500;
         }
+
+        private void CoreWindow_KeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
+        {
+            string runeValue;
+            switch (args.VirtualKey)
+            {
+                case VirtualKey.Q:
+                    runeValue = "1";
+                    break;
+                case VirtualKey.W:
+                    runeValue = "2";
+                    break;
+                case VirtualKey.E:
+                    runeValue = "3";
+                    break;
+                case VirtualKey.A:
+                    runeValue = "4";
+                    break;
+                case VirtualKey.D:
+                    runeValue = "5";
+                    break;
+                case VirtualKey.Z:
+                    runeValue = "6";
+                    break;
+                case VirtualKey.X:
+                    runeValue = "7";
+                    break;
+                case VirtualKey.C:
+                    runeValue = "8";
+                    break;
+                default:
+                    runeValue = "";
+                    break;
+            }
+            if (!string.IsNullOrEmpty(runeValue))
+            {
+                CaptureRuneClick(runeValue);
+            }
+        }
+
 
         private void GameTimer_Tick(object sender, object e)
         {
@@ -63,7 +105,7 @@ namespace Lift.Models
                 Days++;
                 DailyEvents();
                 Hours = 0;
-            }
+        }
         }
 
         public ICommand RuneClicked
@@ -72,9 +114,14 @@ namespace Lift.Models
             {
                 return new DelegateCommand((rune) =>
                 {
-                    Ritual += rune;
+                    CaptureRuneClick((string)rune);
                 });
             }
+        }
+
+        private void CaptureRuneClick(string rune)
+        {
+            Ritual += rune;
         }
         private void DailyEvents()
         {
