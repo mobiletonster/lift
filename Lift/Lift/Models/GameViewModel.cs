@@ -86,6 +86,9 @@ namespace Lift.Models
                 case VirtualKey.C:
                     runeValue = "8";
                     break;
+                case VirtualKey.S:
+                    runeValue = "CAST";
+                    break;
                 default:
                     runeValue = "";
                     break;
@@ -121,13 +124,31 @@ namespace Lift.Models
 
         private void CaptureRuneClick(string rune)
         {
-            Ritual += rune;
+            if (rune == "CAST")
+            {
+                CheckRitual(Ritual);
+                Ritual = string.Empty;
+            }
+            else
+            {
+                Ritual += rune;
+            }
         }
         private void DailyEvents()
         {
             Food -= Population;
             Happiness -= Population;
             Shelter -= Population;
+        }
+
+        private void CheckRitual(string Ritual)
+        {
+            switch (Ritual) {
+                case "":
+                    break;
+                default:
+                    break;
+                }
         }
 
         #region PropertyChangeStuff
