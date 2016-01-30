@@ -40,6 +40,12 @@
                 <TextBlock x:Name="shelterTxt" TextWrapping="Wrap" Text="Shelter:"/>
                 <TextBlock x:Name="shelterTxt_Copy" TextWrapping="Wrap" Text="Happiness:"/>
             </StackPanel>
+            <TextBlock Grid.Column="1"> TEXT LOG </TextBlock>
+            <StackPanel>
+                <TextBlock Text="Stones"/>
+                <TextBlock Text="Air Stones" />
+                <TextBlock Text="Population" />
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
