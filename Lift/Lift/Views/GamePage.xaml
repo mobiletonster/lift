@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="20">
+    <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="271*"/>
@@ -18,6 +18,9 @@
             <TextBlock FontSize="50" HorizontalAlignment="Center">LIFT</TextBlock>
         </Grid>
         <Grid x:Name="VillageMatrix" Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush ImageSource="ms-appx:///Images/grass.gif" Stretch="UniformToFill"/>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*"/>
@@ -66,7 +69,7 @@
                 <TextBlock Text="{Binding Ritual}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <TextBlock>Days: </TextBlock>
+                <TextBlock>Days:</TextBlock>
                 <TextBlock Text="{Binding Days}"></TextBlock>
                 <TextBlock Margin="10,0,0,0">Hours:</TextBlock>
                 <TextBlock Text="{Binding Hours}"></TextBlock>
@@ -93,7 +96,7 @@
                     <TextBlock Text="{Binding Happiness}"></TextBlock>
                 </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Column="1"> TEXT LOG </TextBlock>
+            <TextBlock Grid.Column="1"> TEXT LOG</TextBlock>
             <StackPanel Grid.Column="2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Population:</TextBlock>
