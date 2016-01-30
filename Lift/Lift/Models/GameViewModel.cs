@@ -5,6 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.System.Threading;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Lift.Models
 {
@@ -12,6 +16,7 @@ namespace Lift.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #region Properties
         private int _hours;
         private int _days;
         private int _food;
@@ -20,6 +25,7 @@ namespace Lift.Models
         private int _stones;
         private int _airStones;
         private int _population;
+        private string _ritual;
 
         public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
         public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
@@ -29,6 +35,11 @@ namespace Lift.Models
         public int Stones { get { return _stones; } set { _stones = value; OnPropertyChanged("Stones"); }}
         public int AirStones { get { return _airStones; } set { _airStones = value;  OnPropertyChanged("AirStones"); }}
         public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
+        public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged("Ritual"); } }
+        #endregion
+
+        private DispatcherTimer GameTimer;
+       
         public GameViewModel()
         {
             
@@ -36,7 +47,27 @@ namespace Lift.Models
 
         public void StartGame()
         {
-            Hours = 50;
+            Hours = 0;
+            GameTimer = new DispatcherTimer();
+            GameTimer.Tick += GameTimer_Tick;
+            GameTimer.Interval = new TimeSpan(0, 0, 1); // right now, the timer fires every second.
+            GameTimer.Start();
+        }
+
+        private void GameTimer_Tick(object sender, object e)
+        {
+            Hours++;
+        }
+
+        public ICommand RuneClicked
+        {
+            get
+            {
+                return new DelegateCommand((rune) =>
+                {
+                    Ritual += rune;
+                });
+            }
         }
 
 
