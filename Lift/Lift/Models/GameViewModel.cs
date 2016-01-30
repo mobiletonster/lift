@@ -38,6 +38,9 @@ namespace Lift.Models
         public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
         public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged("Ritual"); } }
         #endregion
+        private int maxFood;
+        private int maxHappiness;
+        private int maxShelter;
 
         private DispatcherTimer GameTimer;
        
@@ -49,12 +52,12 @@ namespace Lift.Models
         public void StartGame()
         {
             Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
-            Hours = 0;
+
             GameTimer = new DispatcherTimer();
             GameTimer.Tick += GameTimer_Tick;
             GameTimer.Interval = new TimeSpan(0, 0, 0, 2, 500); // right now, the timer fires every second.
             GameTimer.Start();
-            Population = 500;
+            Initialize();
         }
 
         private void CoreWindow_KeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
@@ -100,10 +103,10 @@ namespace Lift.Models
         private void GameTimer_Tick(object sender, object e)
         {
             Hours++;
+            HourlyEvents();
             if (Hours == 24)
             {
                 Days++;
-                DailyEvents();
                 Hours = 0;
         }
         }
@@ -123,13 +126,24 @@ namespace Lift.Models
         {
             Ritual += rune;
         }
-        private void DailyEvents()
+        private void HourlyEvents()
         {
-            Food -= Population;
-            Happiness -= Population;
-            Shelter -= Population;
+            Food -= Population/12;
+            Happiness -= Population/12;
+            Shelter -= Population/12;
+            maxFood = Population * 10;
+            maxShelter = Population * 10;
+            maxHappiness = Population * 10;
         }
-
+        private void Initialize()
+        {
+            Hours = 0;
+            Days = 0;
+            Population = 100;
+            Food = 1000;
+            Shelter = 1000;
+            Happiness = 1000;
+        }
         #region PropertyChangeStuff
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
         {
