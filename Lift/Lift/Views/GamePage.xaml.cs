@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lift.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace Lift.Views
     {
         public GamePage()
         {
+            var viewModel = new GameViewModel();
+            this.DataContext = viewModel;
+            viewModel.StartGame();
             this.InitializeComponent();
         }
     }
