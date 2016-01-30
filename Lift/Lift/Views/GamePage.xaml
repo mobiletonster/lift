@@ -61,7 +61,10 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0">COMMANDS</TextBlock>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBlock>Commands:</TextBlock>
+                <TextBlock Text="DATABINDING"></TextBlock>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <TextBlock>Hours: </TextBlock>
                 <TextBlock Text="{Binding Hours}"></TextBlock>
@@ -75,15 +78,33 @@
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
             <StackPanel Margin="0" Padding="0">
-                <TextBlock x:Name="foodTxt" TextWrapping="Wrap" Text="Food:" Margin="0"/>
-                <TextBlock x:Name="shelterTxt" TextWrapping="Wrap" Text="Shelter:"/>
-                <TextBlock x:Name="shelterTxt_Copy" TextWrapping="Wrap" Text="Happiness:"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Food:</TextBlock>
+                    <TextBlock Text="{Binding Food}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Shelter:</TextBlock>
+                    <TextBlock Text="{Binding Shelter}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Happiness:</TextBlock>
+                    <TextBlock Text="{Binding Happiness}"></TextBlock>
+                </StackPanel>
             </StackPanel>
             <TextBlock Grid.Column="1"> TEXT LOG </TextBlock>
             <StackPanel Grid.Column="2">
-                <TextBlock Text="Stones"/>
-                <TextBlock Text="Air Stones" />
-                <TextBlock Text="Population" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Population:</TextBlock>
+                    <TextBlock Text="{Binding Population}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Stones:</TextBlock>
+                    <TextBlock Text="{Binding Stones}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Air Stones:</TextBlock>
+                    <TextBlock Text="{Binding AirStones}"></TextBlock>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
