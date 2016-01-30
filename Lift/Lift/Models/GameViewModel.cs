@@ -13,9 +13,22 @@ namespace Lift.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
         private int _hours;
+        private int _days;
+        private int _food;
+        private int _shelter;
+        private int _happiness;
+        private int _stones;
+        private int _airStones;
+        private int _population;
 
         public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
-
+        public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
+        public int Food { get { return _food; } set { _food = value;  OnPropertyChanged("Food"); }}
+        public int Shelter { get { return _shelter;  } set { _shelter = value;  OnPropertyChanged("Shelter"); }}
+        public int Happiness { get { return _happiness; } set { _happiness = value; OnPropertyChanged("Happiness"); }}
+        public int Stones { get { return _stones; } set { _stones = value; OnPropertyChanged("Stones"); }}
+        public int AirStones { get { return _airStones; } set { _airStones = value;  OnPropertyChanged("AirStones"); }}
+        public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
         public GameViewModel()
         {
             
