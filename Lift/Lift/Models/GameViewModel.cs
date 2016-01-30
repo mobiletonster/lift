@@ -50,13 +50,20 @@ namespace Lift.Models
             Hours = 0;
             GameTimer = new DispatcherTimer();
             GameTimer.Tick += GameTimer_Tick;
-            GameTimer.Interval = new TimeSpan(0, 0, 1); // right now, the timer fires every second.
+            GameTimer.Interval = new TimeSpan(0, 0, 0, 2, 500); // right now, the timer fires every second.
             GameTimer.Start();
+            Population = 500;
         }
 
         private void GameTimer_Tick(object sender, object e)
         {
             Hours++;
+            if (Hours == 24)
+            {
+                Days++;
+                DailyEvents();
+                Hours = 0;
+            }
         }
 
         public ICommand RuneClicked
@@ -69,7 +76,12 @@ namespace Lift.Models
                 });
             }
         }
-
+        private void DailyEvents()
+        {
+            Food -= Population;
+            Happiness -= Population;
+            Shelter -= Population;
+        }
 
         #region PropertyChangeStuff
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
