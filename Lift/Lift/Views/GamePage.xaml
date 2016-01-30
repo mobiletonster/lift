@@ -66,7 +66,9 @@
                 <TextBlock Text="{Binding Ritual}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <TextBlock>Hours: </TextBlock>
+                <TextBlock>Days: </TextBlock>
+                <TextBlock Text="{Binding Days}"></TextBlock>
+                <TextBlock Margin="10,0,0,0">Hours:</TextBlock>
                 <TextBlock Text="{Binding Hours}"></TextBlock>
             </StackPanel>
 
