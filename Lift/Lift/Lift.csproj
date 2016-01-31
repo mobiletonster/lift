@@ -115,6 +115,7 @@
     <Content Include="Images\grass.gif" />
     <Content Include="Images\runeActive.png" />
     <Content Include="Images\runeUnactive.png" />
+    <Content Include="Images\Village.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
