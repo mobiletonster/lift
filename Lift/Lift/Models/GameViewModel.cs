@@ -173,6 +173,7 @@ namespace Lift.Models
                     ConvertStone();
                     break;
                 default:
+                    Log(Ritual + " is an Invalid Ritual");
                     break;
                 }
         }
