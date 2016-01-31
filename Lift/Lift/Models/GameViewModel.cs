@@ -27,6 +27,8 @@ namespace Lift.Models
         private int _airStones;
         private int _population;
         private string _ritual;
+        private List<string> _textLogList;
+        private string _textLog;
 
         public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
         public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
@@ -37,6 +39,8 @@ namespace Lift.Models
         public int AirStones { get { return _airStones; } set { _airStones = value;  OnPropertyChanged("AirStones"); }}
         public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
         public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged("Ritual"); } }
+        public List<string> TextLogList { get { return _textLogList; } set { _textLogList = value;OnPropertyChanged("TextLogList"); } }
+        public string TextLog { get { return _textLog; } set { _textLog = value;OnPropertyChanged("TextLog"); } }
         #endregion
         private int maxMaterials;
 
@@ -57,7 +61,18 @@ namespace Lift.Models
             GameTimer.Start();
             Initialize();
         }
+        private void Initialize()
+        {
+            Hours = 0;
+            Days = 0;
+            Population = 100;
+            Food = 1000;
+            Shelter = 1000;
+            Happiness = 1000;
+            TextLogList = new List<string>();
+        }
 
+        #region events
         private void CoreWindow_KeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
         {
             string runeValue;
@@ -99,19 +114,6 @@ namespace Lift.Models
                 CaptureRuneClick(runeValue);
             }
         }
-
-
-        private void GameTimer_Tick(object sender, object e)
-        {
-            Hours++;
-            HourlyEvents();
-            if (Hours == 24)
-            {
-                Days++;
-                Hours = 0;
-        }
-        }
-
         public ICommand RuneClicked
         {
             get
@@ -122,7 +124,6 @@ namespace Lift.Models
                 });
             }
         }
-
         private void CaptureRuneClick(string rune)
         {
             if (rune == "CAST")
@@ -137,20 +138,23 @@ namespace Lift.Models
         }
         private void HourlyEvents()
         {
-            Food -= Population/12;
-            Happiness -= Population/12;
-            Shelter -= Population/12;
+            Food -= Population / 12;
+            Happiness -= Population / 12;
+            Shelter -= Population / 12;
             Stones += Population / 100;
             maxMaterials = Population * 10;
         }
-        private void Initialize()
+        #endregion
+
+        private void GameTimer_Tick(object sender, object e)
         {
-            Hours = 0;
-            Days = 0;
-            Population = 100;
-            Food = 1000;
-            Shelter = 1000;
-            Happiness = 1000;
+            Hours++;
+            HourlyEvents();
+            if (Hours == 24)
+            {
+                Days++;
+                Hours = 0;
+        }
         }
 
         private void CheckRitual(string Ritual)
@@ -172,15 +176,19 @@ namespace Lift.Models
                     break;
                 }
         }
+
+        #region ChangeMethods
         private void ChangeFood(int change)
         {
             if (Food + change <= maxMaterials)
             {
                 Food += change;
+                Log("Added " + change + " units of food.");
             }
             else
             {
                 Food = maxMaterials;
+                Log("Food units maxed.");
             }
         }
         private void ChangeShelter(int change)
@@ -188,10 +196,12 @@ namespace Lift.Models
             if (Shelter + change <= maxMaterials)
             {
                 Shelter += change;
+                Log("Added " + change + " units of shelter.");
             }
             else
             {
                 Shelter = maxMaterials;
+                Log("Shelter units maxed.");
             }
         }
         private void ChangeHappiness(int change)
@@ -199,10 +209,12 @@ namespace Lift.Models
             if (Happiness + change <= maxMaterials)
             {
                 Happiness += change;
+                Log("Added " + change + " units of happiness.");
             }
             else
             {
                 Happiness = maxMaterials;
+                Log("Villagers are sufficiently happy.");
             }
         }
         private void ConvertStone()
@@ -211,8 +223,40 @@ namespace Lift.Models
             {
                 Stones -= 10;
                 AirStones += 1;
+                Log("10 Stones converted to 1 Air Stone.");
+            }
+            else
+            {
+                Log("Not enough stones. To convert to Air Stone, you need at least 10 stones.");
             }
         }
+
+        #endregion
+
+        private void Log(string message)
+        {
+
+            if (TextLogList.Count > 10)
+            {
+                TextLogList.Insert(0, message);
+                TextLogList.Remove(TextLogList.Last());
+            }else if(TextLogList.Count < 1)
+            {
+                TextLogList.Add(message);
+            }
+            else
+            {
+                TextLogList.Insert(0, message);
+            }
+            string textlog = string.Empty;
+            foreach(var m in TextLogList)
+            {
+                textlog += m + "\n";
+            }
+
+            TextLog = textlog;
+        }
+
         #region PropertyChangeStuff
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
         {

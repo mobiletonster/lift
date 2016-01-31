@@ -156,7 +156,7 @@
                     <TextBlock Text="{Binding Happiness}"></TextBlock>
                 </StackPanel>
             </StackPanel>
-            <TextBlock Grid.Column="1"> TEXT LOG</TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding TextLog}" TextWrapping="Wrap"></TextBlock>
             <StackPanel Grid.Column="2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Population:</TextBlock>
