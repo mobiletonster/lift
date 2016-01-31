@@ -13,40 +13,28 @@ using Windows.UI.Xaml.Controls;
 
 namespace Lift.Models
 {
-    public class GameViewModel : INotifyPropertyChanged
+    public class GameViewModel : BaseModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #region Properties
         private int _hours;
         private int _days;
         private int _food;
-        private int _shelter;
-        private int _happiness;
-        private int _stones;
-        private int _airStones;
-        private int _population;
+        private Village _gameVillage;
         private string _ritual;
         private List<string> _textLogList;
         private string _textLog;
 
-        public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
-        public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
-        public int Food { get { return _food; } set {_food = value; OnPropertyChanged("Food");  }}
-        public int Shelter { get { return _shelter;  } set { _shelter = value;  OnPropertyChanged("Shelter"); }}
-        public int Happiness { get { return _happiness; } set { _happiness = value; OnPropertyChanged("Happiness"); }}
-        public int Stones { get { return _stones; } set { _stones = value; OnPropertyChanged("Stones"); }}
-        public int AirStones { get { return _airStones; } set { _airStones = value;  OnPropertyChanged("AirStones"); }}
-        public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
-        public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged("Ritual"); } }
-        public List<string> TextLogList { get { return _textLogList; } set { _textLogList = value;OnPropertyChanged("TextLogList"); } }
-        public string TextLog { get { return _textLog; } set { _textLog = value;OnPropertyChanged("TextLog"); } }
+        public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged(); }}
+        public int Days { get { return _days; } set { _days = value; OnPropertyChanged();  }}
+        public Village GameVillage { get { return _gameVillage; } set { _gameVillage = value; OnPropertyChanged(); } }
+        public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged(); } }
+        public List<string> TextLogList { get { return _textLogList; } set { _textLogList = value;OnPropertyChanged(); } }
+        public string TextLog { get { return _textLog; } set { _textLog = value;OnPropertyChanged(); } }
         #endregion
-        private int maxMaterials;
-        private double difMultiplier;
 
         private DispatcherTimer GameTimer;
-       
+        Random rnd = new Random();
         public GameViewModel()
         {
             
@@ -64,12 +52,14 @@ namespace Lift.Models
         }
         private void Initialize()
         {
+            
             Hours = 0;
             Days = 0;
-            Population = 100;
-            Food = 1000;
-            Shelter = 1000;
-            Happiness = 1000;
+            GameVillage = new Village();
+            GameVillage.Population = 100;
+            GameVillage.Food = 1000;
+            GameVillage.Shelter = 1000;
+            GameVillage.Happiness = 1000;
             TextLogList = new List<string>();
         }
 
@@ -139,12 +129,19 @@ namespace Lift.Models
         }
         private void HourlyEvents()
         {
-            Food -= Population / 6;
-            Happiness -= Population / 6;
-            Shelter -= Population / 6;
-            Stones += Population / 100;
-            maxMaterials = Population * 10;
-            difMultiplier = (AirStones / 25) + 1;
+
+            GameVillage.Population += (GameVillage.Food + GameVillage.Shelter + GameVillage.Happiness)/1000;
+            GameVillage.Food -= GameVillage.Population / 6;
+            GameVillage.Happiness -= GameVillage.Population / 6;
+            GameVillage.Shelter -= GameVillage.Population / 6;
+            GameVillage.Stones += GameVillage.Population / 100;
+            int calamityChance = rnd.Next(1, (int)(24.0/GameVillage.DiffMultiplier));
+            if (calamityChance ==1)
+            {
+                var calamity = new Calamities(GameVillage);
+                Log(calamity.doCalamity());
+                
+            }
         }
         #endregion
 
@@ -163,78 +160,22 @@ namespace Lift.Models
         {
             switch (Ritual) {
                 case "123":
-                    ChangeFood(100*difMultiplier);
+                    Log(GameVillage.ChangeFood(100));
                     break;
                 case "475":
-                    ChangeHappiness(100 * difMultiplier);
+                    Log(GameVillage.ChangeHappiness(100));
                     break;
                 case "425":
-                    ChangeShelter(100 * difMultiplier);
+                    Log(GameVillage.ChangeShelter(100));
                     break;
                 case "1345":
-                    ConvertStone();
+                    Log(GameVillage.ConvertStone());
                     break;
                 default:
                     Log(Ritual + " is an Invalid Ritual");
                     break;
                 }
         }
-
-        #region ChangeMethods
-        private void ChangeFood(double change)
-        {
-            if (Food + change <= maxMaterials)
-            {
-                Food += (int)change;
-                Log("Added " + change + " units of food.");
-            }
-            else
-            {
-                Food = maxMaterials;
-                Log("Food units maxed.");
-            }
-        }
-        private void ChangeShelter(double change)
-        {
-            if (Shelter + change <= maxMaterials)
-            {
-                Shelter += (int)change;
-                Log("Added " + change + " units of shelter.");
-            }
-            else
-            {
-                Shelter = maxMaterials;
-                Log("Shelter units maxed.");
-            }
-        }
-        private void ChangeHappiness(double change)
-        {
-            if (Happiness + change <= maxMaterials)
-            {
-                Happiness += (int)change;
-                Log("Added " + change + " units of happiness.");
-            }
-            else
-            {
-                Happiness = maxMaterials;
-                Log("Villagers are sufficiently happy.");
-            }
-        }
-        private void ConvertStone()
-        {
-            if (Stones >= 10)
-            {
-                Stones -= 10;
-                AirStones += 1;
-                Log("10 Stones converted to 1 Air Stone.");
-            }
-            else
-            {
-                Log("Not enough stones. To convert to Air Stone, you need at least 10 stones.");
-            }
-        }
-
-        #endregion
 
         private void Log(string message)
         {
@@ -260,23 +201,5 @@ namespace Lift.Models
             TextLog = textlog;
         }
 
-        #region PropertyChangeStuff
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
-        {
-            if (object.Equals(storage, value)) return false;
-
-            storage = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
-        }
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var eventHandler = this.PropertyChanged;
-            if (eventHandler != null)
-            {
-                eventHandler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
     }
 }

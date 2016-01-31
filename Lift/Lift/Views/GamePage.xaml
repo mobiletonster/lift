@@ -148,30 +148,30 @@
             <StackPanel Margin="0" Padding="0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Food:</TextBlock>
-                    <TextBlock Text="{Binding Food}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.Food}"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Shelter:</TextBlock>
-                    <TextBlock Text="{Binding Shelter}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.Shelter}"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Happiness:</TextBlock>
-                    <TextBlock Text="{Binding Happiness}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.Happiness}"></TextBlock>
                 </StackPanel>
             </StackPanel>
             <TextBlock Grid.Column="1" Text="{Binding TextLog}" TextWrapping="Wrap"></TextBlock>
             <StackPanel Grid.Column="2">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Population:</TextBlock>
-                    <TextBlock Text="{Binding Population}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.Population}"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Stones:</TextBlock>
-                    <TextBlock Text="{Binding Stones}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.Stones}"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock>Air Stones:</TextBlock>
-                    <TextBlock Text="{Binding AirStones}"></TextBlock>
+                    <TextBlock Text="{Binding GameVillage.AirStones}"></TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>
