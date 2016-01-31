@@ -32,6 +32,8 @@ namespace Lift.Models
         public List<string> TextLogList { get { return _textLogList; } set { _textLogList = value;OnPropertyChanged(); } }
         public string TextLog { get { return _textLog; } set { _textLog = value;OnPropertyChanged(); } }
         #endregion
+        private int maxMaterials;
+        private double difMultiplier;
 
         private DispatcherTimer GameTimer;
         Random rnd = new Random();
@@ -184,9 +186,64 @@ namespace Lift.Models
                 }
         }
 
+        #region ChangeMethods
+        private void ChangeFood(double change)
+        {
+            if (Food + change <= maxMaterials)
+            {
+                Food += (int)change;
+                Log("Added " + change + " units of food.");
+            }
+            else
+            {
+                Food = maxMaterials;
+                Log("Food units maxed.");
+            }
+        }
+        private void ChangeShelter(double change)
+        {
+            if (Shelter + change <= maxMaterials)
+            {
+                Shelter += (int)change;
+                Log("Added " + change + " units of shelter.");
+            }
+            else
+            {
+                Shelter = maxMaterials;
+                Log("Shelter units maxed.");
+            }
+        }
+        private void ChangeHappiness(double change)
+        {
+            if (Happiness + change <= maxMaterials)
+            {
+                Happiness += (int)change;
+                Log("Added " + change + " units of happiness.");
+            }
+            else
+            {
+                Happiness = maxMaterials;
+                Log("Villagers are sufficiently happy.");
+            }
+        }
+        private void ConvertStone()
+        {
+            if (Stones >= 10)
+            {
+                Stones -= 10;
+                AirStones += 1;
+                Log("10 Stones converted to 1 Air Stone.");
+            }
+            else
+            {
+                Log("Not enough stones. To convert to Air Stone, you need at least 10 stones.");
+            }
+        }
+
+        #endregion
+
         private void Log(string message)
         {
-
             if (TextLogList.Count > 10)
             {
                 TextLogList.Insert(0, message);
