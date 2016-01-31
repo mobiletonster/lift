@@ -137,11 +137,12 @@ namespace Lift.Models
         }
         private void HourlyEvents()
         {
-            Food -= Population / 12;
-            Happiness -= Population / 12;
-            Shelter -= Population / 12;
+            Food -= Population / 6;
+            Happiness -= Population / 6;
+            Shelter -= Population / 6;
             Stones += Population / 100;
             maxMaterials = Population * 10;
+            difMultiplier = (AirStones / 25) + 1;
         }
         #endregion
 
@@ -159,28 +160,29 @@ namespace Lift.Models
         {
             switch (Ritual) {
                 case "123":
-                    ChangeFood(10);
+                    ChangeFood(100*difMultiplier);
                     break;
-                case "1435":
-                    ChangeHappiness(10);
+                case "475":
+                    ChangeHappiness(100 * difMultiplier);
                     break;
                 case "425":
-                    ChangeShelter(10);
+                    ChangeShelter(100 * difMultiplier);
                     break;
                 case "1345":
                     ConvertStone();
                     break;
                 default:
+                    Log(Ritual + " is an Invalid Ritual");
                     break;
                 }
         }
 
         #region ChangeMethods
-        private void ChangeFood(int change)
+        private void ChangeFood(double change)
         {
             if (Food + change <= maxMaterials)
             {
-                Food += change;
+                Food += (int)change;
                 Log("Added " + change + " units of food.");
             }
             else
@@ -189,11 +191,11 @@ namespace Lift.Models
                 Log("Food units maxed.");
             }
         }
-        private void ChangeShelter(int change)
+        private void ChangeShelter(double change)
         {
             if (Shelter + change <= maxMaterials)
             {
-                Shelter += change;
+                Shelter += (int)change;
                 Log("Added " + change + " units of shelter.");
             }
             else
@@ -202,11 +204,11 @@ namespace Lift.Models
                 Log("Shelter units maxed.");
             }
         }
-        private void ChangeHappiness(int change)
+        private void ChangeHappiness(double change)
         {
             if (Happiness + change <= maxMaterials)
             {
-                Happiness += change;
+                Happiness += (int)change;
                 Log("Added " + change + " units of happiness.");
             }
             else
