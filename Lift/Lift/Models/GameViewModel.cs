@@ -30,7 +30,7 @@ namespace Lift.Models
 
         public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
         public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
-        public int Food { get { return _food; } set { _food = value;  OnPropertyChanged("Food"); }}
+        public int Food { get { return _food; } set {_food = value; OnPropertyChanged("Food");  }}
         public int Shelter { get { return _shelter;  } set { _shelter = value;  OnPropertyChanged("Shelter"); }}
         public int Happiness { get { return _happiness; } set { _happiness = value; OnPropertyChanged("Happiness"); }}
         public int Stones { get { return _stones; } set { _stones = value; OnPropertyChanged("Stones"); }}
@@ -38,9 +38,7 @@ namespace Lift.Models
         public int Population { get { return _population; } set { _population = value;  OnPropertyChanged("Population"); }}
         public string Ritual { get { return _ritual; } set { _ritual = value; OnPropertyChanged("Ritual"); } }
         #endregion
-        private int maxFood;
-        private int maxHappiness;
-        private int maxShelter;
+        private int maxMaterials;
 
         private DispatcherTimer GameTimer;
        
@@ -142,9 +140,8 @@ namespace Lift.Models
             Food -= Population/12;
             Happiness -= Population/12;
             Shelter -= Population/12;
-            maxFood = Population * 10;
-            maxShelter = Population * 10;
-            maxHappiness = Population * 10;
+            Stones += Population / 100;
+            maxMaterials = Population * 10;
         }
         private void Initialize()
         {
@@ -159,13 +156,63 @@ namespace Lift.Models
         private void CheckRitual(string Ritual)
         {
             switch (Ritual) {
-                case "":
+                case "123":
+                    ChangeFood(10);
+                    break;
+                case "1435":
+                    ChangeHappiness(10);
+                    break;
+                case "425":
+                    ChangeShelter(10);
+                    break;
+                case "1345":
+                    ConvertStone();
                     break;
                 default:
                     break;
                 }
         }
-
+        private void ChangeFood(int change)
+        {
+            if (Food + change <= maxMaterials)
+            {
+                Food += change;
+            }
+            else
+            {
+                Food = maxMaterials;
+            }
+        }
+        private void ChangeShelter(int change)
+        {
+            if (Shelter + change <= maxMaterials)
+            {
+                Shelter += change;
+            }
+            else
+            {
+                Shelter = maxMaterials;
+            }
+        }
+        private void ChangeHappiness(int change)
+        {
+            if (Happiness + change <= maxMaterials)
+            {
+                Happiness += change;
+            }
+            else
+            {
+                Happiness = maxMaterials;
+            }
+        }
+        private void ConvertStone()
+        {
+            if (Stones >= 10)
+            {
+                Stones -= 10;
+                AirStones += 1;
+            }
+        }
         #region PropertyChangeStuff
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] String propertyName = null)
         {
