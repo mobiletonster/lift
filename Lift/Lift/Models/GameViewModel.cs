@@ -29,6 +29,7 @@ namespace Lift.Models
         private string _ritual;
         private List<string> _textLogList;
         private string _textLog;
+        private int maxMaterials;
 
         public int Hours { get { return _hours; } set { _hours = value; OnPropertyChanged("Hours"); }}
         public int Days { get { return _days; } set { _days = value; OnPropertyChanged("Days");  }}
@@ -42,7 +43,6 @@ namespace Lift.Models
         public List<string> TextLogList { get { return _textLogList; } set { _textLogList = value;OnPropertyChanged("TextLogList"); } }
         public string TextLog { get { return _textLog; } set { _textLog = value;OnPropertyChanged("TextLog"); } }
         #endregion
-        private int maxMaterials;
 
         private DispatcherTimer GameTimer;
        
@@ -50,7 +50,6 @@ namespace Lift.Models
         {
             
         }
-
         public void StartGame()
         {
             Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
@@ -156,7 +155,6 @@ namespace Lift.Models
                 Hours = 0;
         }
         }
-
         private void CheckRitual(string Ritual)
         {
             switch (Ritual) {
@@ -230,12 +228,10 @@ namespace Lift.Models
                 Log("Not enough stones. To convert to Air Stone, you need at least 10 stones.");
             }
         }
-
         #endregion
 
         private void Log(string message)
         {
-
             if (TextLogList.Count > 10)
             {
                 TextLogList.Insert(0, message);
