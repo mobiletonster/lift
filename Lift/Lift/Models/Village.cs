@@ -39,8 +39,16 @@ namespace Lift.Models
         public string ChangeHappiness(double change)
         {
             double adjusted = change * DiffMultiplier;
-            Happiness += (int)adjusted;
+            if (Happiness + adjusted <= 100)
+            {
+                Happiness += (int)adjusted;
                 return "Added " + adjusted + " units of happiness.";
+            }
+            else
+            {
+                Happiness = 100;
+                return "Villagers are sufficiently happy.";
+            }
         }
         public string ConvertStone()
         {

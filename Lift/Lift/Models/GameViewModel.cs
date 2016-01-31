@@ -57,9 +57,9 @@ namespace Lift.Models
             Days = 0;
             GameVillage = new Village();
             GameVillage.Population = 100;
-            GameVillage.Food = 1000;
-            GameVillage.Shelter = 1000;
-            GameVillage.Happiness = 1000;
+            GameVillage.Food = 100;
+            GameVillage.Shelter = 100;
+            GameVillage.Happiness = 50;
             TextLogList = new List<string>();
         }
 
@@ -130,10 +130,17 @@ namespace Lift.Models
         private void HourlyEvents()
         {
 
-            GameVillage.Population += (GameVillage.Food + GameVillage.Shelter + GameVillage.Happiness)/1000;
-            GameVillage.Food -= GameVillage.Population / 6;
-            GameVillage.Happiness -= GameVillage.Population / 6;
-            GameVillage.Shelter -= GameVillage.Population / 6;
+            GameVillage.Population += (int)(GameVillage.Happiness/10.0);
+            
+            
+            if (GameVillage.Food < GameVillage.Population)
+            {
+                GameVillage.Population -= (GameVillage.Population-GameVillage.Food);
+                Log("Lost population not enough food");
+            }
+            GameVillage.Food -= GameVillage.Population / 24;
+            GameVillage.Happiness -= (int)(1.0 * GameVillage.DiffMultiplier);
+            GameVillage.Shelter -= (int)(10.0 * GameVillage.DiffMultiplier);
             GameVillage.Stones += GameVillage.Population / 100;
             int calamityChance = rnd.Next(1, (int)(24.0/GameVillage.DiffMultiplier));
             if (calamityChance ==1)
@@ -160,13 +167,13 @@ namespace Lift.Models
         {
             switch (Ritual) {
                 case "123":
-                    Log(GameVillage.ChangeFood(100));
+                    Log(GameVillage.ChangeFood(10));
                     break;
                 case "475":
-                    Log(GameVillage.ChangeHappiness(100));
+                    Log(GameVillage.ChangeHappiness(1));
                     break;
                 case "425":
-                    Log(GameVillage.ChangeShelter(100));
+                    Log(GameVillage.ChangeShelter(10));
                     break;
                 case "1345":
                     Log(GameVillage.ConvertStone());
