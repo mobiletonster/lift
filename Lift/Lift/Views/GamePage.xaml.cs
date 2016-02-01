@@ -30,5 +30,6 @@ namespace Lift.Views
             viewModel.StartGame();
             this.InitializeComponent();
         }
+
     }
 }

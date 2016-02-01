@@ -115,7 +115,7 @@ namespace Lift.Models
                 });
             }
         }
-        private void CaptureRuneClick(string rune)
+        public void CaptureRuneClick(string rune)
         {
             if (rune == "CAST")
             {
@@ -140,7 +140,7 @@ namespace Lift.Models
             }
             GameVillage.Food -= GameVillage.Population / 24;
             GameVillage.Happiness -= (int)(1.0 * GameVillage.DiffMultiplier);
-            GameVillage.Shelter -= (int)(10.0 * GameVillage.DiffMultiplier);
+            GameVillage.Shelter -= (int)(3.0 * GameVillage.DiffMultiplier);
             GameVillage.Stones += GameVillage.Population / 100;
             int calamityChance = rnd.Next(1, (int)(24.0/GameVillage.DiffMultiplier));
             if (calamityChance ==1)
@@ -167,13 +167,13 @@ namespace Lift.Models
         {
             switch (Ritual) {
                 case "123":
-                    Log(GameVillage.ChangeFood(10));
+                    Log(GameVillage.ChangeFood(50));
                     break;
                 case "475":
                     Log(GameVillage.ChangeHappiness(1));
                     break;
                 case "425":
-                    Log(GameVillage.ChangeShelter(10));
+                    Log(GameVillage.ChangeShelter(50));
                     break;
                 case "1345":
                     Log(GameVillage.ConvertStone());
